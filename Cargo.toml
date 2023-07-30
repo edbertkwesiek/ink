@@ -48,6 +48,8 @@ jsonrpsee = { version = "0.20.0" }
 linkme = { version = "0.3.9" }
 num-traits = { version = "0.2", default-features = false }
 paste = { version = "1.0" }
+polkavm-derive = { git = "https://github.com/koute/polkavm.git" }
+polkavm-derive-impl = { git = "https://github.com/koute/polkavm.git" }
 pretty_assertions = { version = "1" }
 proc-macro2 = { version = "1" }
 quickcheck = { version = "1" }
