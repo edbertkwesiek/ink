@@ -13,7 +13,7 @@ mod xcm_execute {
         prelude::*,
     };
 
-    /// A trivial contract with a single message, that uses `call-runtime` API for
+    /// A trivial contract with a single message, that uses `xcm_execute` API for
     /// performing native token transfer.
     #[ink(storage)]
     #[derive(Default)]
