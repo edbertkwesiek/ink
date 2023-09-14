@@ -534,4 +534,14 @@ pub trait TypedEnvBackend: EnvBackend {
     where
         E: Environment,
         Call: scale::Encode;
+
+    /// Execute an XCM message locally, using the contract's address as the origin.
+    ///
+    /// # Note
+    ///
+    /// For more details visit: [`xcm_execute`][`crate::xcm_execute`]
+    fn xcm_execute<E, Call>(&mut self, msg: &xcm::VersionedXcm<Call>) -> Result<()>
+    where
+        E: Environment,
+        Call: scale::Encode;
 }

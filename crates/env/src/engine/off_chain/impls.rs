@@ -572,4 +572,11 @@ impl TypedEnvBackend for EnvInstance {
     {
         unimplemented!("off-chain environment does not support `call_runtime`")
     }
+
+    fn xcm_execute<E, Call>(&mut self, _msg: &xcm::VersionedXcm<Call>) -> Result<()>
+    where
+        E: Environment,
+    {
+        unimplemented!("off-chain environment does not support `xcm_execute`")
+    }
 }

@@ -163,6 +163,10 @@ mod sys {
         ) -> ReturnCode;
 
         pub fn call_runtime(call_ptr: Ptr32<[u8]>, call_len: u32) -> ReturnCode;
+
+        /// **WARNING**: this function is from the [unstable interface](https://github.com/paritytech/substrate/tree/master/frame/contracts#unstable-interfaces),
+        /// which is unsafe and normally is not available on production chains.
+        pub fn xcm_execute(msg_ptr: Ptr32<[u8]>, msg_len: u32) -> ReturnCode;
     }
 
     #[link(wasm_import_module = "seal1")]
@@ -476,6 +480,11 @@ pub fn return_value(flags: ReturnFlags, return_value: &[u8]) -> ! {
 pub fn call_runtime(call: &[u8]) -> Result {
     let ret_code =
         unsafe { sys::call_runtime(Ptr32::from_slice(call), call.len() as u32) };
+    ret_code.into()
+}
+
+pub fn xcm_execute(msg: &[u8]) -> Result {
+    let ret_code = unsafe { sys::xcm_execute(Ptr32::from_slice(msg), msg.len() as u32) };
     ret_code.into()
 }
 

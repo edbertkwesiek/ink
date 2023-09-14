@@ -799,3 +799,29 @@ where
         TypedEnvBackend::call_runtime::<E, _>(instance, call)
     })
 }
+
+/// Execute an XCM message locally, using the contract's address as the origin.
+///
+/// `call` (after SCALE encoding) should be decodable to a valid instance of `RuntimeCall`
+/// enum.
+///
+/// For more details consult
+/// [host function documentation](https://paritytech.github.io/substrate/master/pallet_contracts/api_doc/trait.Current.html#tymethod.xcm_execute).
+///
+/// # Errors
+///
+/// - If the call cannot be properly decoded on the pallet contracts side.
+/// - If the runtime doesn't allow for the contract unstable feature.
+///
+/// # Panics
+///
+/// Panics in the off-chain environment.
+pub fn xcm_execute<E, Call>(msg: &xcm::VersionedXcm<Call>) -> Result<()>
+where
+    E: Environment,
+    Call: scale::Encode,
+{
+    <EnvInstance as OnInstance>::on_instance(|instance| {
+        TypedEnvBackend::xcm_execute::<E, _>(instance, msg)
+    })
+}

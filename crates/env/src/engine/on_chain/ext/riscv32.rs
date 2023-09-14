@@ -256,6 +256,12 @@ pub fn call_runtime(call: &[u8]) -> Result {
     ret_code.into()
 }
 
+pub fn xcm_execute(msg: &[u8]) -> Result {
+    let ret_code = (Ptr32::from_slice(msg), msg.len() as u32)
+        .using_encoded(|in_data| sys::call(FUNC_ID, Ptr32::from_slice(in_data)));
+    ret_code.into()
+}
+
 macro_rules! impl_wrapper_for {
     ( $( $name:ident, )* ) => {
         $(

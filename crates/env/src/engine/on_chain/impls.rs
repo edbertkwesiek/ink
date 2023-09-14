@@ -18,6 +18,8 @@ use super::{
     Error as ExtError,
     ScopedBuffer,
 };
+use xcm::VersionedXcm;
+
 use crate::{
     call::{
         Call,
@@ -595,5 +597,15 @@ impl TypedEnvBackend for EnvInstance {
         let mut scope = self.scoped_buffer();
         let enc_call = scope.take_encoded(call);
         ext::call_runtime(enc_call).map_err(Into::into)
+    }
+
+    fn xcm_execute<E, Call>(&mut self, msg: &VersionedXcm<Call>) -> Result<()>
+    where
+        E: Environment,
+        Call: scale::Encode,
+    {
+        let mut scope = self.scoped_buffer();
+        let enc_msg = scope.take_encoded(msg);
+        ext::xcm_execute(enc_msg).map_err(Into::into)
     }
 }
