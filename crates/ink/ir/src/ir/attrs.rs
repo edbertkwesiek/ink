@@ -41,6 +41,8 @@ use crate::{
     },
 };
 
+use super::SignatureTopic;
+
 /// An extension trait for [`syn::Attribute`] in order to query for documentation.
 pub trait IsDocAttribute {
     /// Returns `true` if the attribute is a Rust documentation attribute.
@@ -348,6 +350,8 @@ pub enum AttributeArgKind {
     Storage,
     /// `#[ink(event)]`
     Event,
+    /// `#[ink(signature_topic = 0xDEADBEEF)]`
+    SignatureTopic,
     /// `#[ink(anonymous)]`
     Anonymous,
     /// `#[ink(message)]`
@@ -383,6 +387,10 @@ pub enum AttributeArg {
     ///
     /// Applied on `struct` types in order to flag them for being an ink! event.
     Event,
+    /// `ink(signature_topic = 0xDEADBEEF)
+    ///
+    /// A custom specified signature topic for a given ink! event.
+    SignatureTopic(SignatureTopic),
     /// `#[ink(anonymous)]`
     ///
     /// Applied on `struct` event types in order to flag them as anonymous.
@@ -466,6 +474,10 @@ impl core::fmt::Display for AttributeArgKind {
             Self::Namespace => {
                 write!(f, "namespace = N:string")
             }
+            ,
+            Self::SignatureTopic => {
+                write!(f, "signature_topic = S:[u8; 32]")
+            }
             Self::Implementation => write!(f, "impl"),
             Self::HandleStatus => write!(f, "handle_status"),
             Self::Default => write!(f, "default"),
@@ -479,6 +491,7 @@ impl AttributeArg {
         match self {
             Self::Storage => AttributeArgKind::Storage,
             Self::Event => AttributeArgKind::Event,
+            Self::SignatureTopic(_) => AttributeArgKind::SignatureTopic,
             Self::Anonymous => AttributeArgKind::Anonymous,
             Self::Message => AttributeArgKind::Message,
             Self::Constructor => AttributeArgKind::Constructor,
@@ -503,6 +516,7 @@ impl core::fmt::Display for AttributeArg {
             Self::Constructor => write!(f, "constructor"),
             Self::Payable => write!(f, "payable"),
             Self::Selector(selector) => core::fmt::Display::fmt(&selector, f),
+            Self::SignatureTopic(signature) => core::fmt::Display::fmt(&signature, f),
             Self::Extension(extension) => {
                 write!(f, "extension = {:?}", extension.into_u32())
             }
@@ -948,6 +962,9 @@ impl Parse for AttributeFrag {
                                 "expected `bool` value type for `flag` in #[ink(handle_status = flag)]",
                             ))
                         }
+                    },
+                    "signature_topic" => {
+                        unimplemented!()
                     }
                     _ => {
                         Err(format_err_spanned!(

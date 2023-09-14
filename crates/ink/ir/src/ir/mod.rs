@@ -71,6 +71,7 @@ pub use self::{
     config::Config,
     contract::Contract,
     event::Event,
+    event::SignatureTopic,
     ink_test::InkTest,
     item::{
         InkItem,

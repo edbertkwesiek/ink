@@ -14,7 +14,7 @@ pub mod events {
         value: bool,
     }
 
-    #[ink(event)]
+    #[ink(event, signature_topic = 0xFFFF_FFFF_FFFF_FFFF)]
     pub struct InlineFlipped {
         value: bool,
     }
