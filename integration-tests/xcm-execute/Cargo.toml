@@ -17,7 +17,6 @@ xcm = { package = "staging-xcm", version = "1.0.0", default-features = false}
 # See also: https://substrate.stackexchange.com/questions/4733/error-when-compiling-a-contract-using-the-xcm-chain-extension.
 sp-io = { version = "23.0.0", default-features = false, features = ["disable_panic_handler", "disable_oom", "disable_allocator"] }
 sp-runtime = { version = "24.0.0", default-features = false }
-sp-weights = { version = "21.0.0", default-features = false }
 
 [dev-dependencies]
 ink_e2e = { path = "../../crates/e2e" }
